@@ -30,6 +30,7 @@ import static net.pcal.fastback.commands.Commands.SUCCESS;
 import static net.pcal.fastback.commands.Commands.commandLogger;
 import static net.pcal.fastback.commands.Commands.gitOp;
 import static net.pcal.fastback.commands.Commands.subcommandPermission;
+import static net.pcal.fastback.logging.Message.raw;
 
 /**
  * Perform a local backup.
@@ -52,6 +53,7 @@ public class LocalCommand {
     public static int run(ModContext ctx, ServerCommandSource scs) {
         final Logger log = commandLogger(ctx, scs);
         {
+            ctx.renderBackupIndicator(raw("BACKUP!!"));
             // workaround for https://github.com/pcal43/fastback/issues/112
             log.info("Saving before backup");
             ctx.saveWorld();
