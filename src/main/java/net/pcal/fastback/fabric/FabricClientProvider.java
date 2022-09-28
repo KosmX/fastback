@@ -20,8 +20,11 @@ package net.pcal.fastback.fabric;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
 import net.pcal.fastback.fabric.mixins.ScreenAccessors;
 import net.pcal.fastback.logging.Message;
 
@@ -77,17 +80,15 @@ final class FabricClientProvider extends FabricProvider {
 
     @Override
     public void renderBackupIndicator(Message message) {
-        // TODO implement me
-        /**
-         if (true || this.client.options.getShowAutosaveIndicator().getValue()) {
-         MatrixStack matrices = new MatrixStack();
-         TextRenderer textRenderer = this.client.textRenderer;
-         int j = textRenderer.getWidth(text);
-         int k = 16777215;
-         int scaledWidth = this.client.getWindow().getScaledWidth();
-         int scaledHeight = this.client.getWindow().getScaledHeight();
-         textRenderer.drawWithShadow(matrices, text, (float)(scaledWidth - j - 10), (float)(scaledHeight - 15), k);
-         }
-         **/
+        if (true || this.client.options.getShowAutosaveIndicator().getValue()) {
+            final Text text = messageToText(message);
+            MatrixStack matrices = new MatrixStack();
+            TextRenderer textRenderer = this.client.textRenderer;
+            int j = textRenderer.getWidth(text);
+            int k = 16777215;
+            int scaledWidth = this.client.getWindow().getScaledWidth();
+            int scaledHeight = this.client.getWindow().getScaledHeight();
+            textRenderer.drawWithShadow(matrices, text, (float) (scaledWidth - j - 10), (float) (scaledHeight - 15), k);
+        }
     }
 }
