@@ -31,7 +31,6 @@ import net.pcal.fastback.logging.Message;
 
 import java.nio.file.Path;
 
-
 /**
  * @author pcal
  * @since 0.1.0
@@ -61,6 +60,12 @@ final class FabricClientProvider extends FabricProvider implements HudRenderCall
     }
 
     @Override
+    public void setClientHudText(Message message) {
+        this.statusText = messageToText(message);
+
+    }
+
+    @Override
     public void setClientSavingScreenText(Message message) {
         final Screen screen = client.currentScreen;
         if (screen instanceof MessageScreen) {
@@ -76,15 +81,6 @@ final class FabricClientProvider extends FabricProvider implements HudRenderCall
     }
 
     @Override
-    public void setStatusText(final Message message) {
-        this.statusText = messageToText(message);
-    }
-
-    public Text getStatusText() {
-        return this.statusText;
-    }
-
-    @Override
     public Path getSnapshotRestoreDir() {
         return FabricLoader.getInstance().getGameDir().resolve("saves");
     }
@@ -94,7 +90,7 @@ final class FabricClientProvider extends FabricProvider implements HudRenderCall
 
     @Override
     public void onHudRender(MatrixStack matrixStack, float tickDelta) {
-        final Text text = this.getStatusText();
+        final Text text = this.statusText;
         if (text == null) return;
         MatrixStack matrices = new MatrixStack();
         TextRenderer textRenderer = this.client.textRenderer;

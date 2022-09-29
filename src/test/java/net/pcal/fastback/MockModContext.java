@@ -115,7 +115,7 @@ public class MockModContext {
         }
 
         @Override
-        public void setStatusText(Message message) {
+        public void setClientHudText(Message message) {
 
         }
 

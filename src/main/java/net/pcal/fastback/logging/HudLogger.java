@@ -22,40 +22,55 @@ import net.pcal.fastback.ModContext;
 
 import static java.util.Objects.requireNonNull;
 import static net.pcal.fastback.logging.Message.localized;
+import static net.pcal.fastback.logging.Message.raw;
 
-public class ChatLogger implements Logger {
+public class HudLogger implements Logger {
 
     private final ModContext ctx;
 
-    public ChatLogger(ModContext ctx) {
+    public HudLogger(final ModContext ctx) {
         this.ctx = requireNonNull(ctx);
     }
 
     @Override
-    public void notify(Message message) {
-        ctx.sendClientChatMessage(message);
-    }
-
-    @Override
-    public void notifyError(Message message) {
-        ctx.sendClientChatMessage(message);
-    }
-
-    @Override
-    public void internalError(String message, Throwable t) {
-        ctx.sendClientChatMessage(localized("fastback.notify.internal-error"));
-    }
-
-    @Override
-    public void warn(String message) {
+    public void progressComplete(String message, int percentage) {
+        Message text = null;
+        if (message.contains("Finding sources")) {
+            text = localized("fastback.savescreen.remote-preparing", percentage);
+        } else if (message.contains("Writing objects")) {
+            text = localized("fastback.savescreen.remote-uploading", percentage);
+        }
+        if (text == null) text = raw(message + " " + percentage + "%");
+        this.ctx.setClientHudText(text);
     }
 
     @Override
     public void progressComplete(String message) {
+        Message text = null;
+        if (message.contains("Writing objects")) {
+            text = localized("fastback.savescreen.remote-done");
+        }
+        if (text == null) text = raw(message);
+        this.ctx.setClientHudText(text);
     }
 
     @Override
-    public void progressComplete(String message, int percentage) {
+    public void notify(Message message) {
+        this.ctx.setClientHudText(message);
+
+    }
+
+    @Override
+    public void notifyError(Message message) {
+        this.ctx.setClientHudText(message);
+    }
+
+    @Override
+    public void internalError(String message, Throwable t) {
+    }
+
+    @Override
+    public void warn(String message) {
     }
 
     @Override
