@@ -33,17 +33,17 @@ public class ChatLogger implements Logger {
 
     @Override
     public void notify(Message message) {
-        ctx.sendClientChatMessage(message);
+        ctx.setStatusText(message);
     }
 
     @Override
     public void notifyError(Message message) {
-        ctx.sendClientChatMessage(message);
+        ctx.setStatusText(message);
     }
 
     @Override
     public void internalError(String message, Throwable t) {
-        ctx.sendClientChatMessage(localized("fastback.notify.internal-error"));
+        ctx.setStatusText(localized("fastback.notify.internal-error"));
     }
 
     @Override

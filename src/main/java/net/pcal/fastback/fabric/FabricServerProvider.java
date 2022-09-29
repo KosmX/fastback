@@ -19,16 +19,4 @@ public class FabricServerProvider extends FabricProvider {
     public Path getSnapshotRestoreDir() {
         return null;
     }
-
-    @Override
-    public void setClientSavingScreenText(Message message) {
-    }
-
-    @Override
-    public void sendClientChatMessage(Message message) {
-    }
-
-    @Override
-    public void renderBackupIndicator(Message message) {
-    }
 }

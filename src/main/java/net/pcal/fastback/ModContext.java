@@ -170,12 +170,8 @@ public class ModContext {
         return spi.isServerStopping();
     }
 
-    public void setSavingScreenText(Message message) {
-        this.spi.setClientSavingScreenText(message);
-    }
-
-    public void sendClientChatMessage(Message message) {
-        this.spi.sendClientChatMessage(message);
+    public void setStatusText(Message message) {
+        this.spi.setStatusText(message);
     }
 
     public void sendFeedback(Message message, ServerCommandSource scs) {
@@ -184,10 +180,6 @@ public class ModContext {
 
     public void sendError(Message message, ServerCommandSource scs) {
         this.spi.sendError(message, scs);
-    }
-
-    public void renderBackupIndicator(Message message) {
-        this.spi.renderBackupIndicator(message);
     }
 
     public Path getWorldDirectory() {
@@ -260,10 +252,6 @@ public class ModContext {
 
         String getWorldName();
 
-        void setClientSavingScreenText(Message message);
-
-        void sendClientChatMessage(Message message);
-
         Path getSnapshotRestoreDir();
 
         boolean isClient();
@@ -276,7 +264,7 @@ public class ModContext {
 
         boolean isServerStopping();
 
-        void renderBackupIndicator(Message message);
+        void setStatusText(Message message);
 
         void sendFeedback(Message message, ServerCommandSource scs);
 

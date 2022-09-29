@@ -115,7 +115,7 @@ public class MockModContext {
         }
 
         @Override
-        public void renderBackupIndicator(Message message) {
+        public void setStatusText(Message message) {
 
         }
 

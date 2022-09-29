@@ -18,6 +18,7 @@
 
 package net.pcal.fastback.fabric;
 
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -35,9 +36,10 @@ import java.nio.file.Path;
  * @author pcal
  * @since 0.1.0
  */
-final class FabricClientProvider extends FabricProvider {
+final class FabricClientProvider extends FabricProvider implements HudRenderCallback {
 
     private MinecraftClient client = null;
+    private Text statusText;
 
     FabricClientProvider() {
     }
@@ -74,21 +76,32 @@ final class FabricClientProvider extends FabricProvider {
     }
 
     @Override
+    public void setStatusText(final Message message) {
+        this.statusText = messageToText(message);
+    }
+
+    public Text getStatusText() {
+        return this.statusText;
+    }
+
+    @Override
     public Path getSnapshotRestoreDir() {
         return FabricLoader.getInstance().getGameDir().resolve("saves");
     }
 
+    // ====================================================================
+    // HudRender implementation
+
     @Override
-    public void renderBackupIndicator(Message message) {
-        if (true || this.client.options.getShowAutosaveIndicator().getValue()) {
-            final Text text = messageToText(message);
-            MatrixStack matrices = new MatrixStack();
-            TextRenderer textRenderer = this.client.textRenderer;
-            int j = textRenderer.getWidth(text);
-            int k = 16777215;
-            int scaledWidth = this.client.getWindow().getScaledWidth();
-            int scaledHeight = this.client.getWindow().getScaledHeight();
-            textRenderer.drawWithShadow(matrices, text, (float) (scaledWidth - j - 10), (float) (scaledHeight - 15), k);
-        }
+    public void onHudRender(MatrixStack matrixStack, float tickDelta) {
+        final Text text = this.getStatusText();
+        if (text == null) return;
+        MatrixStack matrices = new MatrixStack();
+        TextRenderer textRenderer = this.client.textRenderer;
+        int j = textRenderer.getWidth(text);
+        int k = 16777215;
+        int scaledWidth = this.client.getWindow().getScaledWidth();
+        int scaledHeight = this.client.getWindow().getScaledHeight();
+        textRenderer.drawWithShadow(matrices, text, (float) (scaledWidth - j - 10), (float) (scaledHeight - 15), k);
     }
 }
